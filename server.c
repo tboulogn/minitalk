@@ -6,7 +6,7 @@
 /*   By: tboulogn <tboulogn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:57:00 by tboulogn          #+#    #+#             */
-/*   Updated: 2025/01/20 15:08:00 by tboulogn         ###   ########.fr       */
+/*   Updated: 2025/01/20 17:29:34 by tboulogn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*letter_to_string(char const *message, char const letter)
 	i = 0;
 	tab[j++] = letter;
 	tab[j] = 0;
-	free(message);
+	free((void *)message);
 	return(tab);
 }
 
@@ -61,16 +61,34 @@ void	signal_handler(int sigusrnum)
 	else if (sigusrnum == SIGUSR2)
 		result = result + (1 * ft_recursive_power(2, 7 - counter));
 	counter++;
-	if (counter == 8);
+	if (counter == 8)
 	{
 		final = letter_to_string(final, result);
 		if (result == '\0')
 		{
 			ft_printf("%s\n", final);
+			free(final);
 			final = NULL;
 		}
 		counter = 0;
 		result = 0;
 		len += 1;
 	}
+}
+
+int	main(void)
+{
+	struct sigaction signal_received;
+
+	ft_printf("Welcome to my server!\n");
+	ft_printf("Server's PID is: %d\n", getpid());
+	signal_received.sa_handler = signal_handler;
+	signal_received.sa_flags = 0;
+	sigemptyset(&signal_received.sa_mask);
+	sigaddset(&signal_received.sa_mask, SIGUSR1);
+	sigaddset(&signal_received.sa_mask, SIGUSR2);
+	sigaction(SIGUSR1, &signal_received, NULL);
+	sigaction(SIGUSR2, &signal_received, NULL);
+	while (1)
+		usleep(500);
 }

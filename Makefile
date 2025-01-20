@@ -6,14 +6,14 @@
 #    By: tboulogn <tboulogn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/03 18:16:41 by tboulogn          #+#    #+#              #
-#    Updated: 2025/01/20 13:48:38 by tboulogn         ###   ########.fr        #
+#    Updated: 2025/01/20 16:24:05 by tboulogn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minitalk
 
-LIBFT_DIR	= ./libft
-PRINTF_DIR	= ./ft_printf
+LIBFT_DIR	= libft
+PRINTF_DIR	= ft_printf
 
 LIBFT	= $(LIBFT_DIR)/libft.a
 PRINTF	= $(PRINTF_DIR)/printf.a
@@ -27,32 +27,44 @@ CFLAGS	= -Wall -Wextra -Werror
 RM 		= rm -f
 MAKE	= make
 
-SRCS	= client.c server.c
+CLIENT = client
+SERVER = server
 
-OBJS	= $(SRCS:%.c=%.o)
-					  
-all: $(NAME)
+CLIENT_SRCS = client.c
+SERVER_SRCS = server.c
 
-$(NAME): $(OBJS) $(LIBFT) $(PRINTF)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(PRINTF) -o $(NAME)
-	@echo "$(VERT)Program $(NAME) created.$(RESET)"
+CLIENT_OBJS = $(CLIENT_SRCS:.c=.o)
+SERVER_OBJS = $(SERVER_SRCS:.c=.o)
+
+all: $(CLIENT) $(SERVER)
+
+$(CLIENT): $(CLIENT_OBJS) $(LIBFT) $(PRINTF)
+	$(CC) $(CFLAGS) $(CLIENT_OBJS) $(LIBFT) $(PRINTF) -o $(CLIENT)
+	@echo "$(VERT)Client created.$(RESET)"
+
+$(SERVER): $(SERVER_OBJS) $(LIBFT) $(PRINTF)
+	$(CC) $(CFLAGS) $(SERVER_OBJS) $(LIBFT) $(PRINTF) -o $(SERVER)
+	@echo "$(VERT)Server created.$(RESET)"
 
 $(LIBFT):
-	$(MAKE) -C ./libft
+	$(MAKE) -C $(LIBFT_DIR)
 	@echo "$(VERT)Libft compiled$(RESET)"
 
 $(PRINTF):
-	$(MAKE) -C ./ft_printf
+	$(MAKE) -C $(PRINTF_DIR)
 	@echo "$(VERT)Printf compiled$(RESET)"
 
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
 clean:
-	$(RM) -r $(OBJS)
+	$(RM) $(CLIENT_OBJS) $(SERVER_OBJS)
 	$(MAKE) -C $(LIBFT_DIR) clean
 	$(MAKE) -C $(PRINTF_DIR) clean
 	@echo "$(VERT)Objects cleaned$(RESET)"
 
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(CLIENT) $(SERVER)
 	$(MAKE) -C $(LIBFT_DIR) fclean
 	$(MAKE) -C $(PRINTF_DIR) fclean
 	@echo "$(VERT)All cleaned$(RESET)"

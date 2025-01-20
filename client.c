@@ -6,7 +6,7 @@
 /*   By: tboulogn <tboulogn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:56:47 by tboulogn          #+#    #+#             */
-/*   Updated: 2025/01/20 14:31:50 by tboulogn         ###   ########.fr       */
+/*   Updated: 2025/01/20 17:23:00 by tboulogn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	send_signals(int pid, char *message)
 				kill(pid, SIGUSR1);
 			else if (((unsigned char)(message[letter] >> (7 - i)) & 1) == 1)
 				kill(pid, SIGUSR2);
-			usleep(50);
+			usleep(500);
 			i++;
 		}
 		letter++;
@@ -36,7 +36,7 @@ void	send_signals(int pid, char *message)
 	while(i < 8)
 	{
 		kill(pid, SIGUSR1);
-		usleep(50);
+		usleep(500);
 		i++;
 	}	
 }
@@ -60,11 +60,12 @@ int	main(int ac, char **av)
 			ft_printf("ERROR, nothing to send");
 			return(0);
 		}
-		else
-		{
-			ft_printf("ERROR, not as argument as required. \n");
-			ft_printf("Please enter arguments as follow: ./client <PID> <message>");
-		}
-		return (0);
+		send_signals(server_id, message);
 	}
+	else
+	{
+		ft_printf("ERROR, not as argument as required.\n");
+		ft_printf("Please enter arguments as follow: ./client <PID> <message>");
+	}
+	return (0);
 }
