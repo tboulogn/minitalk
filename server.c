@@ -6,26 +6,11 @@
 /*   By: tboulogn <tboulogn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:57:00 by tboulogn          #+#    #+#             */
-/*   Updated: 2025/01/20 17:29:34 by tboulogn         ###   ########.fr       */
+/*   Updated: 2025/01/22 19:28:25 by tboulogn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
-
-int	ft_recursive_power(int nb, int power)
-{
-	int	res;
-
-	if (power == 0)
-		return (1);
-	else if (power < 0)
-		return (0);
-	else
-	{
-		res = nb * ft_recursive_power(nb, power -1);
-		return (res);
-	}
-}
 
 char	*letter_to_string(char const *message, char const letter)
 {
@@ -47,33 +32,32 @@ char	*letter_to_string(char const *message, char const letter)
 	return(tab);
 }
 
-void	signal_handler(int sigusrnum)
+void signal_handler(int sigusrnum, siginfo_t *info, void *context)
 {
-	static int	counter = 0;
-	static int	result = 0;
-	static int 	len = 0;
-	static char	*final;
+    static int counter = 0;
+    static int result = 0;
+    static char *final = NULL;
 
-	if (!final)
-		final = ft_strdup("");
-	if (sigusrnum == SIGUSR1)
-		result = result + 0;
-	else if (sigusrnum == SIGUSR2)
-		result = result + (1 * ft_recursive_power(2, 7 - counter));
-	counter++;
-	if (counter == 8)
-	{
-		final = letter_to_string(final, result);
-		if (result == '\0')
-		{
-			ft_printf("%s\n", final);
-			free(final);
-			final = NULL;
-		}
-		counter = 0;
-		result = 0;
-		len += 1;
-	}
+    (void)context;
+    if (!final)
+        final = ft_strdup("");
+    if (sigusrnum == SIGUSR2)
+        result += (1 << (7 - counter));
+    counter++;
+    if (counter == 8)
+    {
+        final = letter_to_string(final, result);
+        if (result == '\0')
+        {
+            ft_printf("%s\n", final);
+            free(final);
+            final = NULL;
+        }
+        counter = 0;
+        result = 0;
+    }
+    if (info && info->si_pid)
+        kill(info->si_pid, SIGUSR2);
 }
 
 int	main(void)
@@ -82,13 +66,13 @@ int	main(void)
 
 	ft_printf("Welcome to my server!\n");
 	ft_printf("Server's PID is: %d\n", getpid());
-	signal_received.sa_handler = signal_handler;
-	signal_received.sa_flags = 0;
+	signal_received.sa_sigaction = signal_handler;
+	signal_received.sa_flags = SA_SIGINFO;
 	sigemptyset(&signal_received.sa_mask);
 	sigaddset(&signal_received.sa_mask, SIGUSR1);
 	sigaddset(&signal_received.sa_mask, SIGUSR2);
 	sigaction(SIGUSR1, &signal_received, NULL);
 	sigaction(SIGUSR2, &signal_received, NULL);
 	while (1)
-		usleep(500);
+		pause();
 }
