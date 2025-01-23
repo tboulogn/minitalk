@@ -6,7 +6,7 @@
 #    By: tboulogn <tboulogn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/03 18:16:41 by tboulogn          #+#    #+#              #
-#    Updated: 2025/01/20 16:24:05 by tboulogn         ###   ########.fr        #
+#    Updated: 2025/01/23 16:04:14 by tboulogn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,35 +39,35 @@ SERVER_OBJS = $(SERVER_SRCS:.c=.o)
 all: $(CLIENT) $(SERVER)
 
 $(CLIENT): $(CLIENT_OBJS) $(LIBFT) $(PRINTF)
-	$(CC) $(CFLAGS) $(CLIENT_OBJS) $(LIBFT) $(PRINTF) -o $(CLIENT)
-	@echo "$(VERT)Client created.$(RESET)"
+	@$(CC) $(CFLAGS) $(CLIENT_OBJS) $(LIBFT) $(PRINTF) -o $(CLIENT)
+	@echo "$(VERT)Client created successfully.$(RESET)"
 
 $(SERVER): $(SERVER_OBJS) $(LIBFT) $(PRINTF)
-	$(CC) $(CFLAGS) $(SERVER_OBJS) $(LIBFT) $(PRINTF) -o $(SERVER)
-	@echo "$(VERT)Server created.$(RESET)"
+	@$(CC) $(CFLAGS) $(SERVER_OBJS) $(LIBFT) $(PRINTF) -o $(SERVER)
+	@echo "$(VERT)Server created successfully.$(RESET)"
 
 $(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
-	@echo "$(VERT)Libft compiled$(RESET)"
+	@$(MAKE) -s -C $(LIBFT_DIR)
+	@echo "$(VERT)Libft compiled successfully.$(RESET)"
 
 $(PRINTF):
-	$(MAKE) -C $(PRINTF_DIR)
-	@echo "$(VERT)Printf compiled$(RESET)"
+	@$(MAKE) -s -C $(PRINTF_DIR)
+	@echo "$(VERT)Printf compiled successfully.$(RESET)"
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(CLIENT_OBJS) $(SERVER_OBJS)
-	$(MAKE) -C $(LIBFT_DIR) clean
-	$(MAKE) -C $(PRINTF_DIR) clean
-	@echo "$(VERT)Objects cleaned$(RESET)"
+	@$(RM) $(CLIENT_OBJS) $(SERVER_OBJS)
+	@$(MAKE) -s -C $(LIBFT_DIR) clean
+	@$(MAKE) -s -C $(PRINTF_DIR) clean
+	@echo "$(VERT)Intermediate files cleanned.$(RESET)"
 
 fclean: clean
-	$(RM) $(CLIENT) $(SERVER)
-	$(MAKE) -C $(LIBFT_DIR) fclean
-	$(MAKE) -C $(PRINTF_DIR) fclean
-	@echo "$(VERT)All cleaned$(RESET)"
+	@$(RM) $(CLIENT) $(SERVER)
+	@$(MAKE) -s -C $(LIBFT_DIR) fclean
+	@$(MAKE) -s -C $(PRINTF_DIR) fclean
+	@echo "$(VERT)All files cleaned.$(RESET)"
 
 re: fclean all
 
