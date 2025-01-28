@@ -6,7 +6,7 @@
 #    By: tboulogn <tboulogn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/03 18:16:41 by tboulogn          #+#    #+#              #
-#    Updated: 2025/01/23 16:04:14 by tboulogn         ###   ########.fr        #
+#    Updated: 2025/01/28 13:30:58 by tboulogn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ RESET 	= \033[0m
 VERT 	= \033[1;32m
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror -g
 
 RM 		= rm -f
 MAKE	= make
@@ -40,11 +40,11 @@ all: $(CLIENT) $(SERVER)
 
 $(CLIENT): $(CLIENT_OBJS) $(LIBFT) $(PRINTF)
 	@$(CC) $(CFLAGS) $(CLIENT_OBJS) $(LIBFT) $(PRINTF) -o $(CLIENT)
-	@echo "$(VERT)Client created successfully.$(RESET)"
+	@echo "$(VERT)Client created successfully. Start with ./ client <PID> <message>$(RESET)"
 
 $(SERVER): $(SERVER_OBJS) $(LIBFT) $(PRINTF)
 	@$(CC) $(CFLAGS) $(SERVER_OBJS) $(LIBFT) $(PRINTF) -o $(SERVER)
-	@echo "$(VERT)Server created successfully.$(RESET)"
+	@echo "$(VERT)Server created successfully. Start with ./server$(RESET)"
 
 $(LIBFT):
 	@$(MAKE) -s -C $(LIBFT_DIR)
