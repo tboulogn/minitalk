@@ -6,7 +6,7 @@
 /*   By: tboulogn <tboulogn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:54:26 by tboulogn          #+#    #+#             */
-/*   Updated: 2025/01/22 18:29:30 by tboulogn         ###   ########.fr       */
+/*   Updated: 2025/02/03 10:49:14 by tboulogn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include "libft/libft.h"
 # include "ft_printf/ft_printf.h"
+
+char	*ft_strdup(char const *s);
+int		ft_atoi(char *str);
+int		ft_strlen(char const *str);
 
 #endif
